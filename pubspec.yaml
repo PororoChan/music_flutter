@@ -28,10 +28,12 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
+  file_picker: ^4.3.2
   flutter:
     sdk: flutter
   font_awesome_flutter: ^9.2.0
   http: ^0.13.4
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_lints: ^1.0.0
@@ -54,10 +56,9 @@ flutter:
     - assets/icon/login_icon.png
     - assets/icon/regist_icon.png
 
-  
   fonts:
     - family: Ubuntu
-      fonts: 
+      fonts:
         - asset: assets/fonts/Ubuntu-Regular.ttf
 
     - family: Dongle

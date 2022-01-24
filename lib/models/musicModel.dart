@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-List<Music> musicFromJson(String str) => List<Music>.from(json.decode(str).map((x) => Music.fromJson(x)));
+List<MusicModel> musicModelFromJson(String str) => List<MusicModel>.from(json.decode(str).map((x) => MusicModel.fromJson(x)));
 
-String musicToJson(List<Music> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String musicModelToJson(List<MusicModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Music {
-    Music({
+class MusicModel {
+    MusicModel({
         this.idMsc,
         this.title,
         this.singer,
@@ -23,7 +23,7 @@ class Music {
     String? msc;
     String? singerDesc;
 
-    factory Music.fromJson(Map<String, dynamic> json) => Music(
+    factory MusicModel.fromJson(Map<String, dynamic> json) => MusicModel(
         idMsc: json["id_msc"],
         title: json["title"],
         singer: json["singer"],

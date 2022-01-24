@@ -1,112 +1,77 @@
-// ignore_for_file: file_names, prefer_const_literals_to_create_immutables, prefer_final_fields, unused_local_variable, unused_element, use_key_in_widget_constructors, prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:music_flutter/models/musicModel.dart';
-import 'package:music_flutter/presenters/musicPresenter.dart';
 import 'package:music_flutter/contract/musicContract.dart';
+import 'package:music_flutter/models/musicModel.dart';
+import 'package:music_flutter/presenters/musicPresenters.dart';
+import 'package:music_flutter/services/musicService.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
+List<MusicModel> data = [];
+
 class _HomePageState extends State<HomePage> implements MusicContract {
-  GlobalKey<ScaffoldState> _scaffoldState = GlobalKey();
-  MusicPresenter musicPresenter = MusicPresenter();
+  MusicPresenters musicPresenters = MusicPresenters();
 
   _HomePageState() {
-    musicPresenter.musicContract = this;
-    musicPresenter.loadData();
+    musicPresenters.musicContract = this;
+    musicPresenters.getData();
   }
-
-  List<Music> data = [];
 
   @override
   Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-
-    initState() {
-      setState(() {
-        onSuccessLoadData(data);
-      });
-    }
-
     return Scaffold(
-      key: _scaffoldState,
-      body: Stack(
-        children: <Widget>[
-          _appBarBuild(mediaQuery),
-          _appBar(mediaQuery),
-          _buildListView(mediaQuery),
-        ],
+      body: Container(
+        child: ListView.separated(
+          separatorBuilder: (_, __) {
+            return Divider(
+              color: Colors.grey,
+            );
+          },
+          itemCount: data.length,
+          itemBuilder: (_, index) {
+            var msc = data[index];
+            return ListTile(
+              leading: Image.network(
+                msc.coverMsc ?? "",
+                width: 65,
+              ),
+              title: Text(
+                msc.title ?? "Unknown",
+                style: TextStyle(
+                    fontFamily: 'Dongle',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 24.0),
+              ),
+              subtitle: Text(
+                msc.singer ?? "",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'Dongle',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 
   @override
-  void onFailedLoadData(String message) {
-    print("apa?");
+  void onFetchFailed(String message) {
+    // TODO: implement onFetchFailed
+    print(message);
   }
 
   @override
-  void onSuccessLoadData(List<Music> msc) {
+  void onFetchSuccess(List<MusicModel> music) {
+    // TODO: implement onFetchSuccess
     setState(() {
-      data = msc;
+      data = music;
     });
   }
-}
-
-Widget _appBar(MediaQueryData mediaQuery) {
-  return Container(
-    margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15.0),
-    child: TextFormField(
-        autofocus: false,
-        autocorrect: false,
-        decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            suffixIcon: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {},
-            ),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            hintText: "Search Song",
-            hintStyle:
-                TextStyle(color: Colors.black54, fontWeight: FontWeight.bold))),
-  );
-}
-
-Widget _appBarBuild(MediaQueryData mediaQuery) {
-  return Container(
-    height: mediaQuery.size.height * 0.12,
-    decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [
-            Colors.black,
-            Colors.black87,
-          ],
-        ),
-        borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(45), bottomLeft: Radius.circular(45))),
-  );
-}
-
-Widget _buildListView(MediaQueryData mediaQuery) {
-  List<Music> data = [];
-  return Container(
-    child: ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (_, index) {
-        var item = data[index];
-        return ListTile(
-          leading: Image.network(item.coverMsc ?? ""),
-          title: Text(item.title ?? ""),
-          subtitle: Text(item.singer ?? ""),
-        );
-      },
-    ),
-  );
 }

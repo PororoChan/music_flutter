@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, avoid_print, unnecessary_const, file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:music_flutter/coloring.dart';
 import 'package:music_flutter/models/adminModel.dart';
 import 'package:music_flutter/presenters/adminPresenter.dart';
 import 'package:music_flutter/contract/adminContract.dart';
@@ -20,15 +19,6 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
 
   final _unameField = new TextEditingController();
   final _passField = new TextEditingController();
-
-  AdminPresenter adminPresenter = AdminPresenter();
-
-  Coloring color = Coloring();
-
-  _LoginPageState() {
-    adminPresenter.adminContract = this;
-    adminPresenter.loadData();
-  }
 
   List<Admin> data = [];
 
@@ -64,7 +54,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Proton',
+                        fontFamily: 'Ubuntu',
                         fontSize: 30.0,
                       ),
                     ),
@@ -76,7 +66,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                       style: TextStyle(
                           color: Colors.white70,
                           fontSize: 26,
-                          fontFamily: 'Proton',
+                          fontFamily: 'Ubuntu',
                           fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
@@ -93,7 +83,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                             Text(
                               "Username",
                               style: TextStyle(
-                                fontFamily: 'Proton',
+                                fontFamily: 'Ubuntu',
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                                 color: Colors.white54,
@@ -102,7 +92,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                             TextFormField(
                               controller: _unameField,
                               style: TextStyle(
-                                  color: Colors.white, fontFamily: 'Proton'),
+                                  color: Colors.white, fontFamily: 'Ubuntu'),
                               decoration: InputDecoration(
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide:
@@ -112,7 +102,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                                 ),
                                 hintText: "Enter username",
                                 hintStyle: TextStyle(
-                                  fontFamily: 'Proton',
+                                  fontFamily: 'Ubuntu',
                                   color: Colors.white,
                                 ),
                               ),
@@ -126,13 +116,13 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                                   fontSize: 14.0,
                                   color: Colors.white54,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Proton'),
+                                  fontFamily: 'Ubuntu'),
                             ),
                             TextFormField(
                               controller: _passField,
                               obscureText: true,
                               style: TextStyle(
-                                fontFamily: 'Proton',
+                                fontFamily: 'Ubuntu',
                                 color: Colors.white,
                               ),
                               decoration: InputDecoration(
@@ -170,7 +160,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                                   child: Text(
                                     "Log In",
                                     style: TextStyle(
-                                        fontFamily: 'Proton',
+                                        fontFamily: 'Ubuntu',
                                         color: Colors.white,
                                         letterSpacing: 1,
                                         fontWeight: FontWeight.bold),
@@ -190,7 +180,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                                         decorationThickness: 1,
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: 'Proton'),
+                                        fontFamily: 'Ubuntu'),
                                   ),
                                 )
                               ],
@@ -224,7 +214,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
               Text(
                 "Sign In with :",
                 style: TextStyle(
-                    fontFamily: 'Proton',
+                    fontFamily: 'Ubuntu',
                     fontSize: 18,
                     color: Colors.black54,
                     fontWeight: FontWeight.bold),

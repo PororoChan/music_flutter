@@ -1,6 +1,8 @@
 // ignore_for_file: unnecessary_const
 
 import 'package:flutter/material.dart';
+import 'package:music_flutter/views/addFormPage.dart';
+import 'package:music_flutter/views/homePage.dart';
 import 'package:music_flutter/views/loginPage.dart';
 
 void main() {
@@ -14,7 +16,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LoginPage(),
+      home: const HomePage(),
     );
   }
 }
