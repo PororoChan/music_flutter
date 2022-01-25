@@ -1,34 +1,30 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, unused_import
-import 'dart:io';
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors
+
+import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:music_flutter/contract/addMusicContract.dart';
-import 'package:music_flutter/presenters/addMusicPresenter.dart';
+import 'package:music_flutter/contract/editMusicContract.dart';
 import 'package:music_flutter/models/musicModel.dart';
-import 'package:music_flutter/services/musicService.dart';
-import 'package:music_flutter/contract/musicContract.dart';
-import 'package:music_flutter/presenters/musicPresenters.dart';
-import 'package:music_flutter/views/homePage.dart';
+import 'package:music_flutter/presenters/addMusicPresenter.dart';
+import 'package:music_flutter/presenters/editMusicPresenter.dart';
+import 'package:http/http.dart' as http;
 
-class FormPage extends StatefulWidget {
-  const FormPage({Key? key}) : super(key: key);
-
-  @override
-  _FormPageState createState() => _FormPageState();
-}
-
-class _FormPageState extends State<FormPage> implements AddMusicContract {
-  _FormPageState() {
-    _addMusicPresenter.addMusicContract = this;
+class EditMusicPage extends StatelessWidget implements EditMusicContract {
+  EditMusicPage({required this.id, Key? key}) : super(key: key) {
+    _editMusicPresenter.editMusicContract = this;
+    _editMusicPresenter.findMusic(id);
   }
 
-  final _addMusicPresenter = AddMusicPresenter();
+  String id;
 
   final _formKey = GlobalKey<FormState>();
+  final _editMusicPresenter = Get.put(EditMusicPresenter());
 
   final _title = TextEditingController();
   final _singer = TextEditingController();
@@ -62,7 +58,7 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
                     height: 25.0,
                   ),
                   Text(
-                    "Add Music",
+                    "Edit Data Music",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -86,7 +82,7 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
                           Icons.title,
                           color: Colors.white70,
                         ),
-                        hintText: "Add Song Title",
+                        hintText: "Song Title",
                         hintStyle: TextStyle(
                           color: Colors.white70,
                           fontWeight: FontWeight.w500,
@@ -229,7 +225,7 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
                                 Icons.audiotrack,
                                 color: Colors.white70,
                               ),
-                              hintText: "Upload your Song",
+                              hintText: "Upload Song",
                               hintStyle: TextStyle(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.normal,
@@ -279,7 +275,7 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
                       fontSize: 14,
                     ),
                     decoration: InputDecoration(
-                        hintText: "Add Artist Description",
+                        hintText: "Artist Description",
                         hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.white70,
@@ -328,15 +324,14 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
                             String title = _title.text;
                             String singer = _singer.text;
                             String album_msc = _album_msc.text;
-                            String cover_msc = _cover_msc.text;
                             String msc = _msc.text;
                             String singer_desc = _singer_desc.text;
 
-                            _addMusicPresenter.saveMusic(title, singer,
+                            _editMusicPresenter.editMusic(id, title, singer,
                                 album_msc, _picture!.path, msc, singer_desc);
                           },
                           child: Text(
-                            "Save",
+                            "Update",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -356,15 +351,41 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
   }
 
   @override
-  void onMusicSaveFailed(String message) {
-    // TODO: implement onMusicSaveFailed
+  void onEditFailed(String message) {
+    // TODO: implement onEditFailed
     print(message);
   }
 
   @override
-  void onMusicSaveSuccess(String message) {
-    // TODO: implement onMusicSaveSuccess
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomePage()));
+  void onEditStart() {
+    // TODO: implement onEditStart
+  }
+
+  @override
+  void onEditSuccess(String message) {
+    // TODO: implement onEditSuccess
+    print(message);
+  }
+
+  @override
+  void onFetchDataFailed(String message) {
+    // TODO: implement onFetchDataFailed
+    print("salah");
+  }
+
+  @override
+  void onFetchDataStart() {
+    // TODO: implement onFetchDataStart
+  }
+
+  @override
+  void onFetchDataSuccess(MusicModel musicModel) {
+    // TODO: implement onFetchDataSuccess
+    _title.text = musicModel.title ?? "";
+    _singer.text = musicModel.singer ?? "";
+    _album_msc.text = musicModel.albumMsc ?? "";
+    _cover_msc.text = musicModel.coverMsc ?? "";
+    _msc.text = musicModel.msc ?? "";
+    _singer_desc.text = musicModel.singerDesc ?? "";
   }
 }

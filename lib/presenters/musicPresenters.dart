@@ -16,6 +16,18 @@ class MusicPresenters {
     });
   }
 
+  void deleteMusic(String id) async {
+    musicService
+        .deleteMusic(id)
+        .then(
+          (value) => _musicContract.onDeleteSuccess(value),
+        )
+        .catchError((message) {
+       _musicContract.onDeleteError(message.toString());
+      },
+    );
+  }
+
   set musicContract(MusicContract musicContract) {
     _musicContract = musicContract;
   }

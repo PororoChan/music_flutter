@@ -1,12 +1,13 @@
 // ignore_for_file: unnecessary_const
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:music_flutter/views/addFormPage.dart';
 import 'package:music_flutter/views/homePage.dart';
 import 'package:music_flutter/views/loginPage.dart';
 
 void main() {
-  runApp(const App());
+  runApp(App());
 }
 
 class App extends StatelessWidget {
@@ -14,9 +15,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }
