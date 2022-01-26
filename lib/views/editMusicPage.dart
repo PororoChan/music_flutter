@@ -14,6 +14,7 @@ import 'package:music_flutter/models/musicModel.dart';
 import 'package:music_flutter/presenters/addMusicPresenter.dart';
 import 'package:music_flutter/presenters/editMusicPresenter.dart';
 import 'package:http/http.dart' as http;
+import 'package:music_flutter/views/homePage.dart';
 
 class EditMusicPage extends StatelessWidget implements EditMusicContract {
   EditMusicPage({required this.id, Key? key}) : super(key: key) {
@@ -328,7 +329,7 @@ class EditMusicPage extends StatelessWidget implements EditMusicContract {
                             String singer_desc = _singer_desc.text;
 
                             _editMusicPresenter.editMusic(id, title, singer,
-                                album_msc, _picture!.path, msc, singer_desc);
+                                album_msc, _picture?.path, msc, singer_desc);
                           },
                           child: Text(
                             "Update",

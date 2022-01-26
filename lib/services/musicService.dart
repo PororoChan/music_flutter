@@ -66,15 +66,16 @@ class MusicService {
       data['singer_desc'] = singer_desc;
     }
 
-    var url = Uri.parse(_url + "/" +id);
+    var url = Uri.parse(_url + "/${id}");
 
-    var request = await http.MultipartRequest("POST", url);
+    var request = await http.MultipartRequest("PUT", url);
     request.fields.addAll(data);
     if (cover_msc != null) {
       request.files.add(
         await http.MultipartFile.fromPath("cover_msc", cover_msc),
       );
     }
+
     var res = await request.send();
 
     var response = await http.Response.fromStream(res);
@@ -82,7 +83,7 @@ class MusicService {
   }
 
   Future<MusicModel> findMusic(String id) async {
-    var url = Uri.parse(_url + id);
+    var url = Uri.parse(_url + "/${id}");
 
     var request = await http.get(url);
     Map<String, dynamic> result = jsonDecode(request.body);
@@ -91,7 +92,7 @@ class MusicService {
   }
 
   Future<String> deleteMusic(String id) async {
-    var url = Uri.parse(_url + "/" + id);
+    var url = Uri.parse(_url + "/${id}");
     var response = await http.delete(url);
 
     var data = jsonDecode(response.body);
