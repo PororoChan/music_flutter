@@ -68,9 +68,9 @@ class MusicService {
       data['singer_desc'] = singer_desc;
     }
 
-    var url = Uri.parse(_url + "/${id}");
+    var url = Uri.parse(_url + "/update" + "/${id}");
 
-    var request = await http.MultipartRequest("PUT", url);
+    var request = await http.MultipartRequest("POST", url);
     request.fields.addAll(data);
     if (cover_msc != null) {
       request.files.add(

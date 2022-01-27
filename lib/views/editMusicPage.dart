@@ -329,21 +329,19 @@ class EditMusicPage extends StatelessWidget implements EditMusicContract {
                             String album_msc = _album_msc.text;
                             String singer_desc = _singer_desc.text;
 
-                            if (title != null &&
-                                singer != null &&
-                                album_msc != null &&
-                                singer_desc != null) {
-                              _editMusicPresenter.editMusic(
-                                  id,
-                                  title,
-                                  singer,
-                                  album_msc,
-                                  _picture!.path,
-                                  _music!.path,
-                                  singer_desc);
-                            } else {
-                              Navigator.pop(context);
-                            }
+                            _editMusicPresenter.editMusic(
+                                id,
+                                title,
+                                singer,
+                                album_msc,
+                                _picture?.path,
+                                _music?.path,
+                                singer_desc);
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
                           },
                           child: Text(
                             "Update",
@@ -379,6 +377,7 @@ class EditMusicPage extends StatelessWidget implements EditMusicContract {
   @override
   void onEditSuccess(String message) {
     // TODO: implement onEditSuccess
+    print(message);
   }
 
   @override
