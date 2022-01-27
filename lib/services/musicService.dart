@@ -35,6 +35,11 @@ class MusicService {
       ..files.add(
         await http.MultipartFile.fromPath("cover_msc", cover_msc),
       );
+
+    if (msc != null) {
+      req.files.add(await http.MultipartFile.fromPath("msc", msc));
+    }
+
     var res = await req.send();
 
     var response = await http.Response.fromStream(res);
@@ -59,9 +64,6 @@ class MusicService {
     if (album_msc != null) {
       data['album_msc'] = album_msc;
     }
-    if (msc != null) {
-      data['msc'] = msc;
-    }
     if (singer_desc != null) {
       data['singer_desc'] = singer_desc;
     }
@@ -73,6 +75,12 @@ class MusicService {
     if (cover_msc != null) {
       request.files.add(
         await http.MultipartFile.fromPath("cover_msc", cover_msc),
+      );
+    }
+
+    if (msc != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath("msc", msc),
       );
     }
 

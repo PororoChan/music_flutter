@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> implements MusicContract {
             var msc = data[index];
             return Padding(
               padding: EdgeInsets.only(
-                  top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                  top: 1.0, bottom: 5.0, left: 10.0, right: 10.0),
               child: Card(
                 color: Colors.white,
                 shadowColor: Colors.black,
@@ -73,14 +73,11 @@ class _HomePageState extends State<HomePage> implements MusicContract {
                       musicPresenters.deleteMusic(msc.idMsc ?? "0");
                     },
                     onEdit: (BuildContext context) async {
-                      var result = await Navigator.push(context,
+                      var hasil = await Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         var musc = data[index];
-                        return EditMusicPage(id: musc.idMsc ?? "");
+                        return EditMusicPage(id: musc.idMsc ?? '0');
                       }));
-                      if (result != null) {
-                        setState(() {});
-                      }
                     }),
               ),
             );

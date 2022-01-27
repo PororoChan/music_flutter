@@ -36,7 +36,7 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
   final _cover_msc = TextEditingController();
   final _msc = TextEditingController();
   final _singer_desc = TextEditingController();
-  File? _picture;
+  File? _picture, _music;
 
   @override
   Widget build(BuildContext context) {
@@ -253,10 +253,12 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
                               FilePickerResult? song =
                                   await FilePicker.platform.pickFiles();
 
-                              if (song == null) {
-                                return;
-                              } else {
+                              if (song != null) {
                                 _msc.text = (song.files.single.name);
+                                _music = File(song.files.single.path ?? "");
+                                print(_music);
+                              } else {
+                                return;
                               }
                             },
                             child: Icon(
@@ -332,8 +334,13 @@ class _FormPageState extends State<FormPage> implements AddMusicContract {
                             String msc = _msc.text;
                             String singer_desc = _singer_desc.text;
 
-                            _addMusicPresenter.saveMusic(title, singer,
-                                album_msc, _picture!.path, msc, singer_desc);
+                            _addMusicPresenter.saveMusic(
+                                title,
+                                singer,
+                                album_msc,
+                                _picture!.path,
+                                _music!.path,
+                                singer_desc);
                           },
                           child: Text(
                             "Save",

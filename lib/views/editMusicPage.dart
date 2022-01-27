@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class EditMusicPage extends StatelessWidget implements EditMusicContract {
   final _cover_msc = TextEditingController();
   final _msc = TextEditingController();
   final _singer_desc = TextEditingController();
-  File? _picture;
+  File? _picture, _music;
 
   @override
   Widget build(BuildContext context) {
@@ -254,6 +255,7 @@ class EditMusicPage extends StatelessWidget implements EditMusicContract {
                                 return;
                               } else {
                                 _msc.text = (song.files.single.name);
+                                _music = File(song.files.single.path ?? "");
                               }
                             },
                             child: Icon(
@@ -325,11 +327,23 @@ class EditMusicPage extends StatelessWidget implements EditMusicContract {
                             String title = _title.text;
                             String singer = _singer.text;
                             String album_msc = _album_msc.text;
-                            String msc = _msc.text;
                             String singer_desc = _singer_desc.text;
 
-                            _editMusicPresenter.editMusic(id, title, singer,
-                                album_msc, _picture?.path, msc, singer_desc);
+                            if (title != null &&
+                                singer != null &&
+                                album_msc != null &&
+                                singer_desc != null) {
+                              _editMusicPresenter.editMusic(
+                                  id,
+                                  title,
+                                  singer,
+                                  album_msc,
+                                  _picture!.path,
+                                  _music!.path,
+                                  singer_desc);
+                            } else {
+                              Navigator.pop(context);
+                            }
                           },
                           child: Text(
                             "Update",
@@ -365,7 +379,6 @@ class EditMusicPage extends StatelessWidget implements EditMusicContract {
   @override
   void onEditSuccess(String message) {
     // TODO: implement onEditSuccess
-    print(message);
   }
 
   @override
