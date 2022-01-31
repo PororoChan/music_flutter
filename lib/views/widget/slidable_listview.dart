@@ -87,21 +87,18 @@ class SlidableListview extends StatelessWidget {
           children: <Widget>[
             IconButton(
               onPressed: () {
-                stopAudio();
               },
               icon: Icon(Icons.stop),
               splashColor: Colors.blue,
             ),
             IconButton(
               onPressed: () {
-                pauseAudio();
               },
               icon: Icon(Icons.pause),
               splashColor: Colors.blue,
             ),
             IconButton(
               onPressed: () {
-                playAudio();
               },
               icon: Icon(Icons.play_arrow),
               splashColor: Colors.blue,
@@ -113,14 +110,14 @@ class SlidableListview extends StatelessWidget {
   }
 }
 
-void playAudio() async {
-  _audioPlayer.play(url);
-}
+// void playAudio() async {
+//   _audioPlayer.play(url);
+// }
 
-void pauseAudio() async {
-  _audioPlayer.pause();
-}
+// void pauseAudio() async {
+//   _audioPlayer.pause();
+// }
 
-void stopAudio() async {
-  _audioPlayer.stop();
-}
+// void stopAudio() async {
+//   _audioPlayer.stop();
+// }
