@@ -1,6 +1,13 @@
+import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:music_flutter/models/musicModel.dart';
+
+AudioPlayer _audioPlayer = AudioPlayer();
+
+var url =
+    'http://10.21.1.215:8080/assets/song/1643252959_43234f6c818a42c2e7d0.mp3';
 
 class SlidableListview extends StatelessWidget {
   SlidableListview({
@@ -65,7 +72,7 @@ class SlidableListview extends StatelessWidget {
           singer,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontFamily: 'Ubuntu',
+            fontFamily: 'Ubuntu', 
             color: Colors.black54,
           ),
         ),
@@ -75,11 +82,45 @@ class SlidableListview extends StatelessWidget {
           ),
           child: Image.network(cover_msc),
         ),
-        trailing: IconButton(
-          onPressed: (){},
-          icon: Icon(Icons.play_arrow),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            IconButton(
+              onPressed: () {
+                stopAudio();
+              },
+              icon: Icon(Icons.stop),
+              splashColor: Colors.blue,
+            ),
+            IconButton(
+              onPressed: () {
+                pauseAudio();
+              },
+              icon: Icon(Icons.pause),
+              splashColor: Colors.blue,
+            ),
+            IconButton(
+              onPressed: () {
+                playAudio();
+              },
+              icon: Icon(Icons.play_arrow),
+              splashColor: Colors.blue,
+            )
+          ],
         ),
       ),
     );
   }
+}
+
+void playAudio() async {
+  _audioPlayer.play(url);
+}
+
+void pauseAudio() async {
+  _audioPlayer.pause();
+}
+
+void stopAudio() async {
+  _audioPlayer.stop();
 }

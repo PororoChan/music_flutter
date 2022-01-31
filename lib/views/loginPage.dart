@@ -1,26 +1,23 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, avoid_print, unnecessary_const, file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_flutter/models/adminModel.dart';
-import 'package:music_flutter/presenters/adminPresenter.dart';
-import 'package:music_flutter/contract/adminContract.dart';
+import 'package:music_flutter/presenters/loginPresenter.dart';
+import 'package:music_flutter/contract/loginContract.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:music_flutter/views/homePage.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> implements AdminContract {
+class LoginPage extends StatelessWidget implements LoginContract {
   final GlobalKey<FormState> _form = GlobalKey();
 
-  final _unameField = new TextEditingController();
+  final _emailField = new TextEditingController();
   final _passField = new TextEditingController();
+  final LoginPresenter loginpresenter = LoginPresenter();
 
-  List<Admin> data = [];
+  LoginPage() {
+    loginpresenter.logincontract = this;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +78,7 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Username",
+                              "Email",
                               style: TextStyle(
                                 fontFamily: 'Ubuntu',
                                 fontWeight: FontWeight.bold,
@@ -90,28 +87,39 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                               ),
                             ),
                             TextFormField(
-                              controller: _unameField,
+                              controller: _emailField,
                               style: TextStyle(
                                   color: Colors.white, fontFamily: 'Ubuntu'),
                               decoration: InputDecoration(
+                                suffixIcon: Icon(
+                                  Icons.email,
+                                  color: Colors.white60,
+                                ),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide:
                                         BorderSide(color: Colors.white)),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                 ),
-                                hintText: "Enter username",
+                                hintText: "Enter your Email",
                                 hintStyle: TextStyle(
                                   fontFamily: 'Ubuntu',
                                   color: Colors.white,
                                 ),
                               ),
+                              validator: (value) {
+                                if (value == null || value == "") {
+                                  return "Email can't be empty";
+                                } else if (!value.contains("@")) {
+                                  return "Email must contains @ characters";
+                                }
+                              },
                             ),
                             SizedBox(
                               height: 50.0,
                             ),
                             Text(
-                              "Password",
+                              "Enter Password",
                               style: TextStyle(
                                   fontSize: 14.0,
                                   color: Colors.white54,
@@ -119,22 +127,35 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                                   fontFamily: 'Ubuntu'),
                             ),
                             TextFormField(
-                              controller: _passField,
-                              obscureText: true,
-                              style: TextStyle(
-                                fontFamily: 'Ubuntu',
-                                color: Colors.white,
-                              ),
-                              decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  hintText: "Enter Password",
-                                  hintStyle: TextStyle(color: Colors.white)),
-                            ),
+                                controller: _passField,
+                                obscureText: true,
+                                style: TextStyle(
+                                  fontFamily: 'Ubuntu',
+                                  color: Colors.white,
+                                ),
+                                decoration: InputDecoration(
+                                    suffixIcon: Icon(
+                                      Icons.password,
+                                      color: Colors.white60,
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                    ),
+                                    hintText: "Enter Password",
+                                    hintStyle: TextStyle(color: Colors.white)),
+                                validator: (value) {
+                                  if (value == null || value == "") {
+                                    return "Password must fill";
+                                  } else if (value.length < 6) {
+                                    return "Password must contain minimum 6 characters";
+                                  }
+                                  return null;
+                                }),
                             SizedBox(
                               height: 75.0,
                             ),
@@ -152,10 +173,15 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
                                   color: Colors.transparent,
                                   elevation: 0,
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => HomePage()));
+                                    if (!_form.currentState!.validate()) {
+                                      SnackBar(
+                                        content: Text("Invalid Form Data"),
+                                      );
+                                    } else {
+                                      String email = _emailField.text;
+                                      String password = _passField.text;
+                                      loginpresenter.login(email, password);
+                                    }
                                   },
                                   child: Text(
                                     "Log In",
@@ -197,17 +223,11 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        elevation: 0,
+        elevation: 5,
         color: Colors.transparent,
         child: Container(
           height: 150,
           width: double.maxFinite,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), topRight: Radius.circular(50)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(blurRadius: 1, color: Colors.white70)
-              ]),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -294,12 +314,26 @@ class _LoginPageState extends State<LoginPage> implements AdminContract {
   }
 
   @override
-  void onAddFailed(String message) {
-    print(message);
+  void onLoginFailed(String message) {
+    // TODO: implement onLoginFailed
+    AlertDialog(
+      title: Text("Login Auth"),
+      content: Text("Authentication Failed"),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {},
+          child: Text("Cancel"),
+        )
+      ],
+    );
   }
 
   @override
-  void onAddSuccess(List<Admin> admin) {
-    data = admin;
+  void onLoginSuccess(Map dtLogin) {
+    // TODO: implement onLoginSuccess
+    loginpresenter.isAuth.value = true;
+    loginpresenter.email.value = dtLogin['email'];
+    loginpresenter.password.value = dtLogin['password'];
+    Get.offNamed("/home");
   }
 }

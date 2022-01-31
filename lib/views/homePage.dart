@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> implements MusicContract {
             var msc = data[index];
             return Padding(
               padding: EdgeInsets.only(
-                  top: 1.0, bottom: 5.0, left: 10.0, right: 10.0),
+                  top: 10.0, bottom: 5.0, left: 10.0, right: 10.0),
               child: Card(
                 color: Colors.white,
                 shadowColor: Colors.black,

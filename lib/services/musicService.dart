@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 class MusicService {
-  static const String _url = "http://10.21.1.215:8080/music";
+  static const String _url = "http://10.21.1.215:8000/posts";
 
   Future<List<MusicModel>> getMusic() async {
     Response response = await http.get(Uri.parse(_url));
@@ -28,7 +28,7 @@ class MusicService {
       'singer_desc': singer_desc,
     };
 
-    var url = Uri.parse(_url);
+    var url = Uri.parse(_url + "/add");
 
     var req = await http.MultipartRequest("POST", url)
       ..fields.addAll(data)
