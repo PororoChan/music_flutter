@@ -110,14 +110,14 @@ class SlidableListview extends StatelessWidget {
   }
 }
 
-// void playAudio() async {
-//   _audioPlayer.play(url);
-// }
+void playAudio() async {
+  _audioPlayer.play(url);
+}
 
-// void pauseAudio() async {
-//   _audioPlayer.pause();
-// }
+void pauseAudio() async {
+  _audioPlayer.pause();
+}
 
-// void stopAudio() async {
-//   _audioPlayer.stop();
-// }
+void stopAudio() async {
+  _audioPlayer.stop();
+}

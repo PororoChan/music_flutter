@@ -394,7 +394,7 @@ class EditMusicPage extends StatelessWidget implements EditMusicContract {
   @override
   void onFetchDataSuccess(MusicModel musicModel) {
     // TODO: implement onFetchDataSuccess
-    _title.text = musicModel.title ?? "";
+    _title.text = musicModel.title ?? "Salah";
     _singer.text = musicModel.singer ?? "";
     _album_msc.text = musicModel.albumMsc ?? "";
     _cover_msc.text = musicModel.coverMsc ?? "";

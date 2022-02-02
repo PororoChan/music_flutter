@@ -15,7 +15,7 @@ class MusicModel {
         this.singerDesc,
     });
 
-    String? idMsc;
+    int? idMsc;
     String? title;
     String? singer;
     String? albumMsc;

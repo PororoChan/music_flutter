@@ -8,7 +8,7 @@ class MusicService {
 
   Future<List<MusicModel>> getMusic() async {
     Response response = await http.get(Uri.parse(_url));
-    List data = jsonDecode(response.body);
+    List data = jsonDecode(response.body)['data'] as List;
     List<MusicModel> music = [];
 
     for (var item in data) {
@@ -94,7 +94,7 @@ class MusicService {
     var url = Uri.parse(_url + "/${id}");
 
     var request = await http.get(url);
-    Map<String, dynamic> result = jsonDecode(request.body);
+    Map<String, dynamic> result = jsonDecode(request.body)['data'];
 
     return MusicModel.fromJson(result);
   }

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:music_flutter/contract/musicContract.dart';
 import 'package:music_flutter/models/musicModel.dart';
 import 'package:music_flutter/presenters/musicPresenters.dart';
+import 'package:music_flutter/services/musicService.dart';
 import 'package:music_flutter/views/addFormPage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:music_flutter/views/editMusicPage.dart';
@@ -27,6 +28,8 @@ class _HomePageState extends State<HomePage> implements MusicContract {
     musicPresenters.getData();
   }
 
+  MusicService _musicService = MusicService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +37,10 @@ class _HomePageState extends State<HomePage> implements MusicContract {
         backgroundColor: Colors.lightBlue,
         automaticallyImplyLeading: false,
         toolbarHeight: 65,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(40.0),
+        )),
         title: Text(
           "My Music",
           style: TextStyle(fontFamily: 'Ubuntu'),
@@ -49,40 +56,52 @@ class _HomePageState extends State<HomePage> implements MusicContract {
         label: Text("Add Music"),
         icon: Icon(Icons.add),
       ),
-      body: Container(
-        child: ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (_, index) {
-            var msc = data[index];
-            return Padding(
-              padding: EdgeInsets.only(
-                  top: 10.0, bottom: 5.0, left: 10.0, right: 10.0),
-              child: Card(
-                color: Colors.white,
-                shadowColor: Colors.black,
-                elevation: 5,
-                child: SlidableListview(
-                    index: index,
-                    title: msc.title ?? "Untitled Song",
-                    singer: msc.singer ?? "Unknown Artist",
-                    album_msc: msc.albumMsc ?? "Unknown Album",
-                    cover_msc: msc.coverMsc ?? "Uncovered",
-                    msc: msc.msc ?? "Null",
-                    singer_desc: msc.singerDesc ?? "No Desc",
-                    onDelete: (BuildContext context) {
-                      musicPresenters.deleteMusic(msc.idMsc ?? "0");
-                    },
-                    onEdit: (BuildContext context) async {
-                      var hasil = await Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        var musc = data[index];
-                        return EditMusicPage(id: musc.idMsc ?? '0');
-                      }));
-                    }),
+      body: FutureBuilder(
+        future: _musicService.getMusic(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (_, index) {
+                var msc = data[index];
+                return Padding(
+                  padding: EdgeInsets.only(
+                      top: 10.0, bottom: 5.0, left: 10.0, right: 10.0),
+                  child: Card(
+                    color: Colors.white,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    child: SlidableListview(
+                        index: index,
+                        title: msc.title ?? "Untitled Song",
+                        singer: msc.singer ?? "Unknown Artist",
+                        album_msc: msc.albumMsc ?? "Unknown Album",
+                        cover_msc: msc.coverMsc ?? "Uncovered",
+                        msc: msc.msc ?? "Null",
+                        singer_desc: msc.singerDesc ?? "No Desc",
+                        onDelete: (BuildContext context) {
+                          musicPresenters.deleteMusic(msc.idMsc.toString());
+                        },
+                        onEdit: (BuildContext context) async {
+                          var hasil = await Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            var musc = data[index];
+                            return EditMusicPage(id: musc.idMsc.toString());
+                          }));
+                        }),
+                  ),
+                );
+              },
+            );
+          } else {
+            return Container(
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(
+                color: Colors.lightBlue,
               ),
             );
-          },
-        ),
+          }
+        },
       ),
     );
   }
